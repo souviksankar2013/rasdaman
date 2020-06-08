@@ -67,7 +67,6 @@ div.jgauge p.label
 	text-shadow: 1px 1px 2px #bbb;
 	width: 100%;
 	z-index: 4;
-    background: none;
 }
 
 div.jgauge canvas
