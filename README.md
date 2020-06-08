@@ -27,9 +27,12 @@ To use this WCS-Client :
 
 2. Clone this repo and place applications/wcs-client folder inside /var/lib/tomcat9/webapps. 
 
-3. Ingest coverages (https://doc.rasdaman.org/05_geo-services-guide.html) or use exisitng rasdaman server https://code-de.rasdaman.com/rasdaman/ows
+3. install typescroipt compiler using Node Package Manager (NPM) for compiling the .ts files to .js file. 
+(sudo npm install -g typescript@2.6)
 
-4. Sometimes tomcat9 gives some error in ingesting. Tomcat 9 generally run in 8080. Then install tomcat8 and change its port to any free port and place the wcs-client folder inside /var/lib/tomcat8/webapps. 
+4. Ingest coverages (https://doc.rasdaman.org/05_geo-services-guide.html) or use exisitng rasdaman server https://code-de.rasdaman.com/rasdaman/ows
+
+5. Sometimes tomcat9 gives some error in ingesting. Tomcat 9 generally run in 8080. Then install tomcat8 and change its port to any free port and place the wcs-client folder inside /var/lib/tomcat8/webapps. 
 
 You can test various queries in this client and if its working correctly add it in the client for quick access. 
  
