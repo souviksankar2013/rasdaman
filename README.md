@@ -33,5 +33,5 @@ To use this WCS-Client :
 
 You can test various queries in this client and if its working correctly add it in the client for quick access. 
  
- 
+Modified by - Souvik Sankar Mitra
 
