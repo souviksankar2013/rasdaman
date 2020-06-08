@@ -219,7 +219,91 @@ module rasdaman {
                 }, {
                     title: 'Encode 2D as png with WebWorldWind (wwd) widget ',
                     query: 'wwd(-44.525,111.975,-8.975,156.275)>>for $c in (mean_summer_airtemp) return encode($c, "png")'
+                },
+                
+                {
+                    title: '-- Sentinel 1 Geoprocessing --',
+                    query: ''
+                },
+                {
+                    title: 'Simple Ship Detection',
+                    query: 'image>>for $c in (S1_GRD_IW_VH) return encode(switch case $c[Lat(53.885:53.925), Long(7.77:7.85), ansi("2017-06-05")] > 150 return {red: 255; green: 0; blue: 0} default return {red: 0; green: 0; blue: 0}, "jpeg")'
+                },
+                {
+                    title: 'Agricultural Classification',
+                    query: 'image>>for $c in (S1_GRD_IW_VH) return encode(switch case $c[Lat(53.685:53.725), Long(7.77:7.85), ansi("2017-06-05")] < 30  return {red: 10; green: 11; blue: 104}  case $c[Lat(53.685:53.725), Long(7.77:7.85), ansi("2017-06-05")] < 50  return {red: 45; green: 48; blue: 145}  case $c[Lat(53.685:53.725), Long(7.77:7.85), ansi("2017-06-05")] < 70  return {red: 122; green: 151; blue: 225}  case $c[Lat(53.685:53.725), Long(7.77:7.85), ansi("2017-06-05")] < 90  return {red: 18; green: 187; blue: 47}  case $c[Lat(53.685:53.725), Long(7.77:7.85), ansi("2017-06-05")] < 130  return {red: 11; green: 97; blue: 26}   case $c[Lat(53.685:53.725), Long(7.77:7.85), ansi("2017-06-05")] < 170 return {red: 235; green: 235; blue: 9}  case $c[Lat(53.685:53.725), Long(7.77:7.85), ansi("2017-06-05")] < 210  return {red: 159; green: 159; blue: 16}  case $c[Lat(53.685:53.725), Long(7.77:7.85), ansi("2017-06-05")] < 250 return {red: 187; green: 18; blue: 239}  case $c[Lat(53.685:53.725), Long(7.77:7.85), ansi("2017-06-05")] < 650  return {red: 82; green: 23; blue: 96}  default return {red: 0; green: 0; blue: 0}, "jpeg")'
+                },
+
+
+
+                {
+                    title: 'Contrast Enhacement:',
+                    query: 'image>>for $c in (S1_GRD_IW_VH) return encode((unsigned char) ($c[Lat(53.685:53.725), Long(7.77:7.85), ansi("2017-06-05")]) * 3.5, "jpeg")'
+                },
+                {
+                    title: 'Clipping Land by Polygon',
+                    query: 'image>>for $c in (S1_GRD_IW_VH) return encode( clip($c[Lat(53.68:53.8), Long(7.66:7.95), ansi("2017-06-05")], POLYGON(( 53.7501 7.6847, 53.7633 7.6963, 53.7631 7.7214, 53.7604 7.7386, 53.7653 7.7753, 53.7736 7.8079, 53.7746 7.8172, 53.7803 7.8234, 53.7823 7.8052, 53.7823 7.7805, 53.7829 7.7163, 53.7811 7.6929, 53.7677 7.6703, 53.7604 7.6665, 53.7549 7.6703)) ) * 2, "png")'
+                },
+                {
+                    title: 'Simple Water Mask',
+                    query: 'image>>for $c in (S1_GRD_IW_VH) return encode(switch case ($c[Lat(53.685:53.725), Long(7.77:7.85), ansi("2017-06-05")]) < 50 return {red: 0; green: 0; blue: 255} default return {red: 0; green:0; blue:0}, "jpeg")'
+
+                },
+
+                {
+                    title: 'False Color Two Polarisation',
+                    query: 'image>>for $c in (S1_GRD_IW_VH), $d in (S1_GRD_IW_VV) return encode((unsigned char) { red: $c[Lat(53.685:53.725), Long(7.77:7.85), ansi("2017-06-05")]; green: $d[Lat(53.685:53.725), Long(7.77:7.85), ansi("2017-06-05")]; blue: $c[Lat(53.685:53.725), Long(7.77:7.85), ansi("2017-06-05")]}, "jpeg")'
+
+
+                },
+
+                {
+                    title: '-- Sentinel 2 Geoprocessing --',
+                    query: ''
+                },
+
+                {
+                    title: 'True Color Composite',
+                    query: 'image>>for $c in (S2_L2A_32631_B04_60m),$d in (S2_L2A_32631_B03_60m),$e in (S2_L2A_32631_B02_60m) return encode({red:   $c[ansi("2017-04-03"), E(640000:690000), N(5090220:5115220)];green: $d[ansi("2017-04-03"), E(640000:690000), N(5090220:5115220)];blue:  $e[ansi("2017-04-03"), E(640000:690000), N(5090220:5115220)]}/ 10, "jpeg")'
+
+                },
+
+                {
+                    title: 'False Color Composite',
+                    query : 'image>>for $c in (S2_L2A_32631_B08_10m),$d in (S2_L2A_32631_B04_10m),$e in (S2_L2A_32631_B03_10m) return encode({ red: $c[ansi("2017-04-03"), E(640000:647000), N(5090220:5094220)]; green: $d[ansi("2017-04-03"), E(640000:647000), N(5090220:5094220)]; blue: $e[ansi("2017-04-03"), E(640000:647000), N(5090220:5094220)]}/ 10, "jpeg")'
+
+                },
+
+                {
+                    title: 'Simple Wet Land Mark',
+                    query: 'image>>for $c in (S2_L2A_32631_B12_60m),$d in (S2_L2A_32631_B05_60m),$e in (S2_L2A_32631_B06_60m) return encode(switch case $c[ansi("2017-04-03"), E(640000:690000), N(5090220:5115220)] < 1200 and $d[ansi("2017-04-03"), E(640000:690000), N(5090220:5115220)] < 1500 and $e[ansi("2017-04-03"), E(640000:690000), N(5090220:5115220)] < 1700 return {red: 0; green: 0; blue: 255 } default return {red: 0; green: 0; blue: 0}), "jpeg")'
+
+                },
+
+                {
+                    title: 'Soil Land , Wet Land Distiction',
+                    query: 'image>>for $c in (S2_L2A_32631_B04_60m),$d in (S2_L2A_32631_B06_60m),$e in (S2_L2A_32631_B07_60m) return encode({red:   $c[ansi("2017-04-03"), E(640000:690000), N(5090220:5115220)]; green: $d[ansi("2017-04-03"), E(640000:690000), N(5090220:5115220)];blue:  $e[ansi("2017-04-03"), E(640000:690000), N(5090220:5115220)]}/ 10, "jpeg")'
+
+                },
+
+                {
+                    title: 'MERIS Terrestrial Chlorophil Index',
+                    query: 'image>>for $c in (S2_L2A_32631_B06_60m),$d in (S2_L2A_32631_B05_60m),$e in (S2_L2A_32631_B04_60m) return encode(((float)($c[ansi("2017-04-03"), E(640000:690000), N(5090220:5115220)]- $d[ansi("2017-04-03"), E(640000:690000), N(5090220:5115220)])/ (float)($c[ansi("2017-04-03"), E(640000:690000), N(5090220:5115220)]- $e[ansi("2017-04-03"), E(640000:690000), N(5090220:5115220)])) * 255, "jpeg")'
+
+                },
+
+                {
+                    title: 'Natural Colors with Atmospheric Removal',
+                    query: 'image>>for $c in (S2_L2A_32631_B12_60m),$d in (S2_L2A_32631_B07_60m),$e in (S2_L2A_32631_B03_60m) return encode({red:   $c[ansi("2017-04-03"), E(640000:690000), N(5090220:5115220)];green: $d[ansi("2017-04-03"), E(640000:690000), N(5090220:5115220)];blue:  $e[ansi("2017-04-03"), E(640000:690000), N(5090220:5115220)]}/ 10, "jpeg")'
+
+                },
+
+                {
+                    title: 'Highlight Green Areas',
+                    query: 'image>>for $c in (S2_L2A_32631_B02_60m),$d in (S2_L2A_32631_B07_60m),$e in (S2_L2A_32631_B03_60m) return encode({red:   $c[ansi("2017-04-03"), E(640000:690000), N(5090220:5115220)];green: $d[ansi("2017-04-03"), E(640000:690000), N(5090220:5115220)];blue:  $e[ansi("2017-04-03"), E(640000:690000), N(5090220:5115220)]}/ 10, "jpeg")'
+
                 }
+
 
                 //{
                 //    Title: 'Most basic query',
